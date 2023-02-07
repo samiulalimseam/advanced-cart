@@ -1,6 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { ShopContext } from '../../context/ShopContext';
 
 const ProductCard = ({ product }) => {
+    const { cartArray, setCartArray } = useContext(ShopContext);
+
+    const handleAddProduct = () => {
+
+        if (cartArray.find(item => item.Id === product.Id)) {
+            alert('Already Exists')
+        }
+        else {
+            
+            setCartArray(cartArray => [...cartArray, product])
+            console.log(cartArray)
+        }
+
+    }
     return (
         <div className='shadow-lg rounded-lg w-96 my-5 mx-auto'>
 
@@ -13,8 +28,8 @@ const ProductCard = ({ product }) => {
                     <p className=''>Location: {product.Location}</p>
                 </div>
                 <div className=" flex flex-col">
-<button className='p-2 bg-red-500 rounded text-white m-1'>Add to list</button>
-<button className='p-2 bg-blue-600 rounded text-white m-1'>Modify</button>
+                    <button onClick={handleAddProduct} className='p-2 bg-red-500 rounded text-white m-1'>Add to list</button>
+                    <button className='p-2 bg-blue-600 rounded text-white m-1'>Modify</button>
                 </div>
             </div>
         </div>
