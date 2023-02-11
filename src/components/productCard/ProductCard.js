@@ -14,6 +14,7 @@ const ProductCard = ({ product }) => {
             setCartArray(cartArray => [...cartArray, product])
             console.log(cartArray)
         }
+        
 
     }
     return (
@@ -26,7 +27,8 @@ const ProductCard = ({ product }) => {
                     <p className=''>Size: {product.Size}</p>
                     <p className=''>Price: {product.MRP}</p>
                     <p className=''>Location: {product.Location}</p>
-                </div>
+                        {product?.isSoldOut && <p>Sold Out</p> }
+                        </div>
                 <div className=" flex flex-col">
                     <button onClick={handleAddProduct} className='p-2 bg-red-500 rounded text-white m-1'>Add to list</button>
                     <button className='p-2 bg-blue-600 rounded text-white m-1'>Modify</button>

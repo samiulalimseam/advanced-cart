@@ -44,7 +44,7 @@ const Shop = () => {
             <input onChange={getData} className='border rounded w-96 h-12' type="text" />
             <div className="products">
                 {
-                    products.filter(product=> product.Id.toString().includes(search) || product.Model.toString().toLowerCase().includes(search.toLocaleLowerCase()) ).slice(0,50).map(product=> <ProductCard key={product.Id} product={product}></ProductCard> )
+                    products.filter(product=> !product.isSoldOut && (product.Id.toString().includes(search) || product.Model.toString().toLowerCase().includes(search.toLocaleLowerCase())) ).slice(0,50).map(product=> <ProductCard key={product.Id} product={product}></ProductCard> )
         }
             </div>
             {/* <div className="flex flex-col">

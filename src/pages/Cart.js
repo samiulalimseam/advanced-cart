@@ -1,12 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { ShopContext } from '../context/ShopContext';
 import {products} from '../../src/products'
 import { Oval } from 'react-loader-spinner';
+import ReactPrint from 'react-to-print';
+import axios from 'axios';
 
 const Cart = () => {
     const { cartArray, setCartArray } = useContext(ShopContext);
     const [products,setProducts] = useState();
     const [loading, setLoading] = useState(false);
+    const ref = useRef();
     // useEffect(()=>{
     //     setLoading(true);
     //     fetch('http://localhost:5000/products')
@@ -22,6 +25,20 @@ const Cart = () => {
     const clearCart = () =>{
         setCartArray([])
     }
+
+    const sodldOut = () => {
+        const productsToSold = [];
+        cartArray.map(product=> productsToSold.push(product.Id) )
+        axios.post('http://localhost:5000/updatemany', {
+            method: "POST",
+            headers: {
+                "conent-type": "application/json"
+            },
+            body: productsToSold
+        })
+        
+        .then(data=> console.log(data))
+    }
     if(loading){
         return (
             <div>
@@ -33,7 +50,7 @@ const Cart = () => {
         <div>
             <h3>Total {cartArray.length} items added</h3>
            <div className="product-list w-[50%] shadow-lg rounded-lg my-5 mx-auto">
-           <table className='w-full'>
+           <table ref={ref} className='w-full'>
                 <tr className='flex justify-between w-full px-5'>
                     <th> <input type="checkbox" /> </th>
                     <th>SL</th>
@@ -58,7 +75,9 @@ const Cart = () => {
                 }
             </table>
             <div className="action">
-                <button className='bg-green-400 p-2 m-2 rounded'>Make Invoice</button>
+                <ReactPrint content={()=> ref.current} trigger={ ()=> <button className='bg-green-400 p-2 m-2 rounded'>Make Invoice</button>}/>
+                
+                <button onClick={sodldOut} className='bg-yellow-400 p-2 m-2 rounded'>Sold Out</button>
                 <button className='bg-orange-400 p-2 m-2 rounded'>Move to Hazaribagh</button>
                 <button className='bg-orange-400 p-2 m-2 rounded'>Move to Malibagh</button>
                 <button onClick={clearCart} className='bg-red-600 text-white p-2 m-2 rounded'>Clear Cart</button>
