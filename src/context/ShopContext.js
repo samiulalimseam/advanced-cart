@@ -4,17 +4,18 @@ export const ShopContext = createContext({});
 
 const ShopContextProvider = ({children}) => {
     const [cartArray, setCartArray] = useState([]);    
+    const [userData, setUserData] = useState([]);    
 
 
 
 
 
 
- const shopData = {cartArray,setCartArray}
+ const contextData = {cartArray,setCartArray,userData,setUserData}
 
     return (
         <div>
-            <ShopContext.Provider value={shopData}>
+            <ShopContext.Provider value={contextData}>
                 {children}
             </ShopContext.Provider>
         </div>

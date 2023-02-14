@@ -12,7 +12,7 @@ const Cart = () => {
     const ref = useRef();
     // useEffect(()=>{
     //     setLoading(true);
-    //     fetch('http://localhost:5000/products')
+    //     fetch('https://advanced-cart-server-fixed.vercel.app/products')
     //     .then(res=> res.json())
     //     .then(data=>{
     //         setProducts(data)
@@ -29,7 +29,7 @@ const Cart = () => {
     const sodldOut = () => {
         const productsToSold = [];
         cartArray.map(product=> productsToSold.push(product.Id) )
-        axios.post('http://localhost:5000/updatemany', {
+        axios.post('https://advanced-cart-server-fixed.vercel.app/updatemany', {
             method: "POST",
             headers: {
                 "conent-type": "application/json"

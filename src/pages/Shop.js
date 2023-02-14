@@ -16,7 +16,7 @@ const Shop = () => {
 
     useEffect(() => {
         setLoading(true);
-        fetch('http://localhost:5000/products')
+        fetch('https://advanced-cart-server-fixed.vercel.app/products')
             .then(res => res.json())
             .then(data => {
                 setProducts(data)
