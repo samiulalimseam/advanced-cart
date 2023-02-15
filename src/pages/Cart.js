@@ -9,7 +9,12 @@ const Cart = () => {
     const { cartArray, setCartArray } = useContext(ShopContext);
     const [products,setProducts] = useState();
     const [loading, setLoading] = useState(false);
+    
+   
     const ref = useRef();
+
+
+
     // useEffect(()=>{
     //     setLoading(true);
     //     fetch('https://advanced-cart-server-fixed.vercel.app/products')
@@ -21,12 +26,18 @@ const Cart = () => {
     //     .catch(err=> console.error(err))
     // },[])
 
-
+    const handleDelete = (p) =>{
+        const deleteArray = [...cartArray];
+        
+        deleteArray.splice(deleteArray.findIndex(item => item.Id === p.Id),1)
+        setCartArray(deleteArray);
+        console.log(deleteArray);
+    }
     const clearCart = () =>{
         setCartArray([])
     }
 
-    const sodldOut = () => {
+    const soldOut = () => {
         const productsToSold = [];
         cartArray.map(product=> productsToSold.push(product.Id) )
         axios.post('https://advanced-cart-server-fixed.vercel.app/updatemany', {
@@ -68,7 +79,7 @@ const Cart = () => {
                                 <td>{product.Model} </td>
                                 <td>{product.MRP} </td>
                                 <td>{product.Location} </td>
-                                <td><button className='p-1 m-2 bg-red-400 rounded-md text-white'>Remove</button></td>
+                                <td><button onClick={()=> handleDelete(product)} className='p-1 m-2 bg-red-400 rounded-md text-white'>Remove</button></td>
                             </tr>
                         </div>
                     })
@@ -77,7 +88,7 @@ const Cart = () => {
             <div className="action">
                 <ReactPrint content={()=> ref.current} trigger={ ()=> <button className='bg-green-400 p-2 m-2 rounded'>Make Invoice</button>}/>
                 
-                <button onClick={sodldOut} className='bg-yellow-400 p-2 m-2 rounded'>Sold Out</button>
+                <button onClick={soldOut} className='bg-yellow-400 p-2 m-2 rounded'>Sold Out</button>
                 <button className='bg-orange-400 p-2 m-2 rounded'>Move to Hazaribagh</button>
                 <button className='bg-orange-400 p-2 m-2 rounded'>Move to Malibagh</button>
                 <button onClick={clearCart} className='bg-red-600 text-white p-2 m-2 rounded'>Clear Cart</button>

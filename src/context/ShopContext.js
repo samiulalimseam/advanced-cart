@@ -1,17 +1,43 @@
-import React, { createContext, useState } from 'react';
+import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import React, { createContext, useState , useEffect} from 'react';
+import app from '../firebase/firebase.config';
 
 export const ShopContext = createContext({});
-
-const ShopContextProvider = ({children}) => {
-    const [cartArray, setCartArray] = useState([]);    
-    const [userData, setUserData] = useState([]);    
-
-
-
-
+const auth = getAuth(app);
+const ShopContextProvider = ({ children }) => {
+    const [cartArray, setCartArray] = useState([]);
+    const [userData, setUserData] = useState([]);
+    const [user, setUser] = useState({});
+   
 
 
- const contextData = {cartArray,setCartArray,userData,setUserData}
+
+
+    const googleLogin = (email, password) =>{
+        return signInWithEmailAndPassword(auth, email, password)
+    }
+    
+    const logOut = ()=>{
+        return signOut((auth))
+    }
+    
+    useEffect(()=>{
+        const unsubscribe =  onAuthStateChanged(auth, currentUser =>{
+             setUser(currentUser);
+            
+         })
+         return ()=>{
+             unsubscribe();
+         }
+     },[])
+    
+
+
+
+
+
+
+    const contextData = {googleLogin,user,logOut,cartArray, setCartArray, userData, setUserData }
 
     return (
         <div>

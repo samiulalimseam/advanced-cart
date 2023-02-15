@@ -1,20 +1,29 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { ShopContext } from '../../context/ShopContext';
 
 const ProductCard = ({ product }) => {
     const { cartArray, setCartArray } = useContext(ShopContext);
+    const [btnStatus, setBtnStatus] = useState(false);
+    const [btnColor, setBtnColor] = useState('red');
+    const [cursorStatus, setCursorStatus] = useState('pointer');
+
+
 
     const handleAddProduct = () => {
+
+
+
 
         if (cartArray.find(item => item.Id === product.Id)) {
             alert('Already Exists')
         }
         else {
-            
+
             setCartArray(cartArray => [...cartArray, product])
-            console.log(cartArray)
+            setBtnStatus(true)
+            setBtnColor('gray')
         }
-        
+
 
     }
     return (
@@ -27,10 +36,11 @@ const ProductCard = ({ product }) => {
                     <p className=''>Size: {product.Size}</p>
                     <p className=''>Price: {product.MRP}</p>
                     <p className=''>Location: {product.Location}</p>
-                        {product?.isSoldOut && <p>Sold Out</p> }
-                        </div>
+                    {product?.isSoldOut && <p>Sold Out</p>}
+                </div>
                 <div className=" flex flex-col">
-                    <button onClick={handleAddProduct} className='p-2 bg-red-500 rounded text-white m-1'>Add to list</button>
+                    <button onClick={handleAddProduct} className='p-2 bg-red-500 rounded text-white m-1' style={{ backgroundColor: `${cartArray.findIndex(item => item.Id === product.Id) >= 0 && 'gray'}`, cursor: `${cartArray.findIndex(item => item.Id === product.Id) >= 0 && 'not-allowed'}` }}
+                        disabled={cartArray.findIndex(item => item.Id === product.Id) >= 0 && 'true'}>Add to list</button>
                     <button className='p-2 bg-blue-600 rounded text-white m-1'>Modify</button>
                 </div>
             </div>

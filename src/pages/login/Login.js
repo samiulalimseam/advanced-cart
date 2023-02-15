@@ -19,7 +19,7 @@ export default function Login() {
         e.preventDefault()
         const loginData = { username: e.target.emailAddress.value, pass: e.target.password.value };
 
-        axios.post('http://localhost:5000/login', {
+        axios.post('https://advanced-cart-server-fixed.vercel.app/login', {
             method: "POST",
             headers: {
                 "content-type":"application/json"
