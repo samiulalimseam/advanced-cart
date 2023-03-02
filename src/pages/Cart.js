@@ -10,9 +10,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Cart = () => {
     const { cartArray, setCartArray } = useContext(ShopContext);
-    const [products, setProducts] = useState();
-    const [loading, setLoading] = useState(false);
-    const [orderInfo,setOrderInfo] = useState({customerNumber: '',customerName: '', customerEmail: ''});
+    const [loading, setLoading]= useState(false); 
+    const [orderInfo,setOrderInfo] = useState({customerNumber: '',customerName: '', customerEmail: '',products:cartArray});
 
 
 
@@ -32,10 +31,24 @@ const Cart = () => {
     // },[])
 
     const storeOrder = () => {
+        axios.post('http://localhost:5000/createorder', {
+            method: "POST",
+            headers: {
+                "content-type": "application/json",
+
+            },
+           body:orderInfo 
+        } )
+        .then(res=> {
+            
+            toast('Order Created successfully')
+        })
         
+        .catch(err=> console.log(err))
+        soldOut();
     }
 
-    const notify = ()=> toast('Ok');
+    // delete eproduct from cart
     const handleDelete = (p) => {
         const deleteArray = [...cartArray];
 
@@ -45,10 +58,12 @@ const Cart = () => {
     const clearCart = () => {
         setCartArray([])
     }
-
+            //  update stock of product
     const soldOut = () => {
+        
         const productsToSold = [];
         cartArray.map(product => productsToSold.push(product.Id))
+        
         axios.post('https://advanced-cart-server-fixed.vercel.app/updatemany', {
             method: "POST",
             headers: {
@@ -57,7 +72,7 @@ const Cart = () => {
             body: productsToSold
         })
 
-            .then(data => toast('Product stock Uodated'))
+            .then(data => toast('Product stock Updated'))
             .catch(err=> console.error(err))
     }
     if (loading) {
@@ -104,7 +119,7 @@ const Cart = () => {
                     <button className='bg-orange-400 p-2 m-2 rounded'>Move to Malibagh</button>
                 </div>
             </div>
-            <InvoiceModal orderInfo={orderInfo} setOrderInfo={setOrderInfo} soldOut={soldOut} data={cartArray}></InvoiceModal>
+            <InvoiceModal clearCart={clearCart} storeOrder={storeOrder} orderInfo={orderInfo} setOrderInfo={setOrderInfo} soldOut={soldOut} data={cartArray}></InvoiceModal>
         </div>
     );
 };
