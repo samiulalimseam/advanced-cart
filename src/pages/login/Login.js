@@ -13,8 +13,15 @@
   ```
 */
 import axios from "axios";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { ShopContext } from "../../context/ShopContext";
 
 export default function Login() {
+    const{setUserData} = useContext(ShopContext);
+    const navigate = useNavigate();
+
+
     const singIn = (e) => {
         e.preventDefault()
         const loginData = { username: e.target.emailAddress.value, pass: e.target.password.value };
@@ -27,7 +34,13 @@ export default function Login() {
             body: loginData
 
         })
-        .then(res=> console.log(res))
+        // .then(res=> res.json())
+        .then(data=> {
+            setUserData(data.data)
+            
+            navigate('/')
+        })
+        .catch(err=> console.error(err))
 
     }
     return (
