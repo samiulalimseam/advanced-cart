@@ -10,12 +10,15 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Cart = () => {
     const { cartArray, setCartArray } = useContext(ShopContext);
-    const [loading, setLoading]= useState(false); 
-    const [orderInfo,setOrderInfo] = useState({customerNumber: '',customerName: '', customerEmail: '',products:cartArray});
-
-
-
+    const [loading, setLoading] = useState(false);
+    const [orderInfo, setOrderInfo] = useState({ customerNumber: '', customerName: '', customerEmail: '', products: cartArray });
     const ref = useRef();
+    const [toShow, setShow] = useState('hidden');
+
+    const changeToShow = () => {
+        setShow('block')
+        return toShow;
+    }
 
 
 
@@ -31,20 +34,20 @@ const Cart = () => {
     // },[])
 
     const storeOrder = () => {
-        axios.post('http://localhost:5000/createorder', {
+        axios.post('https://advanced-cart-server-fixed-samiulalimseam.vercel.app/createorder', {
             method: "POST",
             headers: {
                 "content-type": "application/json",
 
             },
-           body:orderInfo 
-        } )
-        .then(res=> {
-            
-            toast('Order Created successfully')
+            body: orderInfo
         })
-        
-        .catch(err=> console.log(err))
+            .then(res => {
+
+                toast('Order Created successfully')
+            })
+
+            .catch(err => console.log(err))
         soldOut();
     }
 
@@ -58,12 +61,12 @@ const Cart = () => {
     const clearCart = () => {
         setCartArray([])
     }
-            //  update stock of product
+    //  update stock of product
     const soldOut = () => {
-        
+
         const productsToSold = [];
         cartArray.map(product => productsToSold.push(product.Id))
-        
+
         axios.post('https://advanced-cart-server-fixed.vercel.app/updatemany', {
             method: "POST",
             headers: {
@@ -73,7 +76,7 @@ const Cart = () => {
         })
 
             .then(data => toast('Product stock Updated'))
-            .catch(err=> console.error(err))
+            .catch(err => console.error(err))
     }
     if (loading) {
         return (
@@ -86,6 +89,12 @@ const Cart = () => {
         <div>
             <h3>Total {cartArray.length} items added</h3>
             <div className="product-list w-[50%] shadow-lg rounded-lg my-5 mx-auto">
+                <div className={``} >
+                    <style>
+                        {`@media print {.contacts{display: none;}}`}
+                    </style>
+                    <p>Print Test</p>
+                </div>
                 <table ref={ref} className='w-full'>
                     <tr className='flex justify-between w-full px-5'>
                         <th> <input type="checkbox" /> </th>
@@ -111,7 +120,7 @@ const Cart = () => {
                     }
                 </table>
                 <div className="action">
-                    <ReactPrint content={() => ref.current} trigger={() => <button className='bg-green-400 p-2 m-2 rounded'>Make Invoice</button>} />
+                    <ReactPrint content={() => ref.current} trigger={() => <button onClick={changeToShow} className='bg-green-400 p-2 m-2 rounded'>Make Invoice</button>} />
 
                     {/* <button onClick={soldOut} className='bg-yellow-400 p-2 m-2 rounded'>Sold Out</button> */}
                     <label htmlFor="my-modal-3" className="btn">Make Invoice</label>

@@ -4,6 +4,7 @@ import Main from '../layout/Main';
 import AddProduct from '../pages/AddProduct/AddProduct';
 import Cart from '../pages/Cart';
 import Login from '../pages/login/Login';
+import Orders from '../pages/orders/Orders';
 import Shop from '../pages/Shop';
 import PrivateRoute from './PrivateRoute';
 
@@ -23,6 +24,10 @@ const siteRoutes = createBrowserRouter([
             {
                 path: "/add-product",
                 element:<PrivateRoute> <AddProduct></AddProduct> </PrivateRoute>
+            },
+            {
+                path: "/orders",
+                element:<PrivateRoute> <Orders></Orders> </PrivateRoute>
             },
 
         ]
