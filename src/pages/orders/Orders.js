@@ -1,9 +1,16 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { CSVLink } from 'react-csv';
 import SingleOrder from '../../components/singleOrder/SingleOrder';
 
 const Orders = () => {
     const [orders, setOrders] = useState([]);
+    const headers= [
+        {label:"customer", key: "customerEmail"},
+        {label:"customer name", key: "customerName"},
+        {label:"Number", key: "customerNumber"},
+        {label:"Products", key: "products"},
+    ]
 
 
 
@@ -27,8 +34,9 @@ const Orders = () => {
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-8 h-8 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
                     </div>
                     <div className="stat-title">Total Orders</div>
-                    <div className="stat-value text-primary">{orders.length}</div>
+                    <div className="stat-value text-primary">{orders?.length}</div>
                     <div className="stat-desc">21% more than last month</div>
+                    <CSVLink className='btn btn-xs btn-warning' headers={headers} data={orders}>Export</CSVLink>
                 </div>
 
                 <div className="stat">

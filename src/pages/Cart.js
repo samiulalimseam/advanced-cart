@@ -120,7 +120,7 @@ const Cart = () => {
                     }
                 </table>
                 <div className="action">
-                    <ReactPrint content={() => ref.current} trigger={() => <button onClick={changeToShow} className='bg-green-400 p-2 m-2 rounded'>Make Invoice</button>} />
+                    <ReactPrint content={() => ref.current} trigger={() => <button onClick={changeToShow} className='bg-green-400 p-2 m-2 rounded'>Print Invoice</button>} />
 
                     {/* <button onClick={soldOut} className='bg-yellow-400 p-2 m-2 rounded'>Sold Out</button> */}
                     <label htmlFor="my-modal-3" className="btn">Make Invoice</label>
@@ -128,7 +128,7 @@ const Cart = () => {
                     <button className='bg-orange-400 p-2 m-2 rounded'>Move to Malibagh</button>
                 </div>
             </div>
-            <InvoiceModal clearCart={clearCart} storeOrder={storeOrder} orderInfo={orderInfo} setOrderInfo={setOrderInfo} soldOut={soldOut} data={cartArray}></InvoiceModal>
+            <InvoiceModal handleDelete={handleDelete} clearCart={clearCart} storeOrder={storeOrder} orderInfo={orderInfo} setOrderInfo={setOrderInfo} soldOut={soldOut} data={cartArray}></InvoiceModal>
         </div>
     );
 };

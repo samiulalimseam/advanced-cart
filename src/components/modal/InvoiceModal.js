@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
 
 
-const InvoiceModal = ({ data, soldOut,clearCart, orderInfo,storeOrder, setOrderInfo }) => {
+const InvoiceModal = ({ data, handleDelete, soldOut,clearCart,cartArray, orderInfo,storeOrder, setOrderInfo }) => {
     const {  handleSubmit, formState: { errors } } = useForm();
     const navigate = useNavigate();
     const [isChecked, setIsChecked] = useState(false); 
@@ -29,6 +29,7 @@ const InvoiceModal = ({ data, soldOut,clearCart, orderInfo,storeOrder, setOrderI
                         {errors.number && <span>This field is required</span>}
                         <input onChange={e => { setOrderInfo({ ...orderInfo, customerName: e.target.value }) }}  type="text" name='name' placeholder="Name" className=" m-1 input input-bordered input-primary w-full max-w-xs" />
                         <input onChange={e => { setOrderInfo({ ...orderInfo, customerEmail: e.target.value }) }}  type="email" name='email' placeholder="Email" className=" m-1 input input-bordered input-primary w-full max-w-xs" />
+                        
                         <button  className='btn btn-primary'>Submit</button>
                     </form>
 

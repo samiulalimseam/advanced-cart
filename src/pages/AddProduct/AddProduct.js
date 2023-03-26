@@ -1,68 +1,124 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import DynamicInputs from '../../components/dynamicInputs/DynamicInputs';
+import SizeCard from '../../components/sizeCard/SizeCard';
 
 const AddProduct = () => {
-    return (
-        <div className='m-auto w-96'>
-            <form class="w-full max-w-lg">
-  <div class="flex flex-wrap -mx-3 mb-6">
-    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-      <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
-        Model
-      </label>
-      <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="Jane" />
-      {/* <p class="text-red-500 text-xs italic">Please fill out this field.</p> */}
-    </div>
-    <div class="w-full md:w-1/2 px-3">
-      <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
-        Price
-      </label>
-      <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="number" placeholder="" />
-    </div>
-  </div>
-  <div class="flex flex-wrap -mx-3 mb-6">
-    <div class="w-full px-3">
-      <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
-        Size
-      </label>
-      <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-password" type="password" placeholder="" />
-      <p class="text-gray-600 text-xs italic">Make it as long and as crazy as you'd like</p>
-    </div>
-  </div>
-  <div class="flex flex-wrap -mx-3 mb-2">
-    <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-      <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-city">
-        Stock+
-      </label>
-      <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-city" type="number" placeholder="" />
-    </div>
-    <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-      <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
-        Category
-      </label>
-      <div class="relative">
-        <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
-          <option>New Mexico</option>
-          <option>Missouri</option>
-          <option>Texas</option>
-        </select>
-        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-          <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+  const [sizeArray, setSizeArray] = useState([{size:''}]);
+  const [sizeAndQuanity, setSizeAndQuantity] = useState(null);
+  const [size, setSize] = useState('');
+  const [productInput, setProductinput] = useState({ Id: null, Model: null, Size: null, MRP: null, Location: null, isSoldOut: false })
+
+  const handleFormChange = (event, index) => {
+    let data = [...sizeArray];
+    data[index][event.target.name] = event.target.value;
+    setSizeArray(data);
+  }
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      // 👇 Get input value
+
+      if (!sizeArray.includes(size)) {
+
+        setSizeArray([...sizeArray, size])
+      } else {
+        window.alert(size + 'Already in list!')
+      }
+    }
+  }
+
+  const handleSubmit = () => {
+    console.log(productInput);
+  }
+
+
+  const handleClick = () => {
+
+
+  }
+
+
+  // generate product sku locally
+
+  const sendProductstoCreate = () => {
+    const productInfo =
+      fetch('http://localhost:5000/createproduct', {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+
+        },
+        body: productInput
+      })
+  }
+
+
+  return (
+    <div className='m-auto w-96'>
+      <div class="w-full max-w-lg">
+        <div class="flex flex-wrap -mx-3 mb-6">
+          <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+              Model
+            </label>
+            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="A14" />
+            {/* <p class="text-red-500 text-xs italic">Please fill out this field.</p> */}
+          </div>
+          <div class="w-full md:w-1/2 px-3">
+            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+              Price
+            </label>
+            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="number" placeholder="" />
+          </div>
+        </div>
+        <div class="flex flex-wrap -mx-3 mb-6">
+          <div class="w-full px-3">
+            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
+              Size
+            </label>
+            <input onChange={(e) => { setSize(e.target.value) }} onKeyDown={handleKeyDown} class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="size-field" type="text" placeholder="Write a size name and press enter" />
+            <div className=''>
+
+              {/* adding multiple sizes  */}
+              <div className='card card-compact w-96 bg-base-100 shadow-xl flex flex-col-reverse animate__animated animate__fadeInDown'>
+                <form >
+
+                  {
+                    sizeArray.map((size, index) =>
+
+
+                      <div className='flex justify-between items-center border m-2 p-2 rounded animate__animated animate__fadeInDown'>
+                        <label className='w-[20%] font-bold bg-slate-400 text-white rounded-l p-2' ></label>
+                        <input name='size'  onChange={(event) => handleFormChange(event, index)} placeholder='0' className='border w-[70%] rounded-r p-2' type="number" />
+                        <button className=' btn-xs btn-circle bg-red-600 text-white p-0'>X</button>
+
+                      </div>
+
+
+                    )
+                  }
+                </form>
+              </div>
+            </div>
+            <p class="text-gray-600 text-xs italic">Make it as long and as crazy as you'd like</p>
+          </div>
+        </div>
+        <div class="flex flex-wrap -mx-3 mb-2">
+
+
+          <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-zip">
+              Location
+            </label>
+            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-zip" type="text" placeholder="90210" />
+            <button onClick={() => handleSubmit} class="btn btn-primary">Submit</button>
+
+          </div>
         </div>
       </div>
-    </div>
-    <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-      <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-zip">
-        Location
-      </label>
-      <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-zip" type="text" placeholder="90210" />
-      <button class="btn btn-primary">Button</button>
 
     </div>
-  </div>
-</form>
-
-        </div>
-    );
+  );
 };
 
 export default AddProduct;
