@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { CSVLink } from 'react-csv';
+import { Oval } from 'react-loader-spinner';
 
 const Inventory = () => {
     const [products, setProducts] = useState([]);
@@ -29,9 +30,12 @@ const Inventory = () => {
     }, [])
 
     if (loading) {
-        return <div>
-            <h1>Loading...</h1>
+        return  <div className='m-auto w-full'>
+        <div className="spinner m-auto w-12">
+
+            <Oval color='red' />
         </div>
+    </div>
     }
 
 

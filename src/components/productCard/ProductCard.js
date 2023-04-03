@@ -39,9 +39,9 @@ const ProductCard = ({ product }) => {
                     {product?.isSoldOut && <p>Sold Out</p>}
                 </div>
                 <div className=" flex flex-col">
-                    <button onClick={handleAddProduct} className='p-2 bg-red-500 rounded text-white m-1' style={{ backgroundColor: `${cartArray.findIndex(item => item.Id === product.Id) >= 0 && 'gray'}`, cursor: `${cartArray.findIndex(item => item.Id === product.Id) >= 0 && 'not-allowed'}` }}
+                    <button onClick={handleAddProduct} className='btn btn-warning m-1' style={{ backgroundColor: `${cartArray.findIndex(item => item.Id === product.Id) >= 0 && 'gray'}`, cursor: `${cartArray.findIndex(item => item.Id === product.Id) >= 0 && 'not-allowed'}` }}
                         disabled={cartArray.findIndex(item => item.Id === product.Id) >= 0 && 'true'}>Add to list</button>
-                    <button className='p-2 bg-blue-600 rounded text-white m-1'>Modify</button>
+                    <button className='btn btn-info m-1'>Modify</button>
                 </div>
             </div>
         </div>

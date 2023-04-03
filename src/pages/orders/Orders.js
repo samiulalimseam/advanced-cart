@@ -1,28 +1,41 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { CSVLink } from 'react-csv';
+import { Oval } from 'react-loader-spinner';
 import SingleOrder from '../../components/singleOrder/SingleOrder';
 
 const Orders = () => {
     const [orders, setOrders] = useState([]);
-    const headers= [
-        {label:"customer", key: "customerEmail"},
-        {label:"customer name", key: "customerName"},
-        {label:"Number", key: "customerNumber"},
-        {label:"Products", key: "products"},
+    const [loading, setLoading] = useState(true);
+    const headers = [
+        { label: "customer", key: "customerEmail" },
+        { label: "customer name", key: "customerName" },
+        { label: "Number", key: "customerNumber" },
+        { label: "Products", key: "products" },
     ]
 
 
 
     //  get orders from database
-    useEffect(()=>{
+    useEffect(() => {
 
         fetch('https://advanced-cart-server-fixed-samiulalimseam.vercel.app/orders')
-        .then(res => res.json())
-        .then(data=> setOrders(data))
-        .catch(err => console.error(err))
-    },[])
+            .then(res => res.json())
+            .then(data => {
+                setOrders(data)
+                setLoading(false)
+            })
+            .catch(err => console.error(err))
+    }, [])
 
+    if (loading) {
+        return <div className='m-auto w-full'>
+            <div className="spinner m-auto w-12">
+
+                <Oval color='red' />
+            </div>
+        </div>
+    }
 
     return (
         <div>
@@ -74,9 +87,9 @@ const Orders = () => {
                         </tr>
                     </thead>
                     <tbody>
-                       {orders.map(order=> {
-                        return <SingleOrder order={order}></SingleOrder>
-                       })}
+                        {orders.map(order => {
+                            return <SingleOrder order={order}></SingleOrder>
+                        })}
                     </tbody>
                 </table>
             </div>
