@@ -38,7 +38,7 @@ const siteRoutes = createBrowserRouter([
             {
                 path: "/print/:id",
                 element:<PrivateRoute> <OrderPrint></OrderPrint> </PrivateRoute>,
-                loader: ({ params }) => fetch(`http://localhost:5000/getorder/${params.id}`)
+                loader: ({ params }) => fetch(`https://advanced-cart-server-fixed-samiulalimseam.vercel.app/getorder/${params.id}`)
             },
 
 
