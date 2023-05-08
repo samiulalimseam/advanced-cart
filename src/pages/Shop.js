@@ -6,6 +6,7 @@ import { Oval } from 'react-loader-spinner';
 import { AuthContextProvider } from '../context/AuthContextProvider';
 
 const Shop = () => {
+    const [location,setLocation] = useState([]);
     const [search, setSearch] = useState('')
     const { cartArray } = useContext(ShopContext);
     
@@ -18,6 +19,12 @@ const Shop = () => {
         setSearch(val.target.value)
     }
 
+    useEffect(()=>{
+        fetch('http://localhost:5000/api/locations')
+            .then(res=> res.json())
+            .then(data=> setLocation(data))
+            .catch(err=> console.error(err))
+    },[])
     useEffect(() => {
         setLoading(true);
         fetch('https://advanced-cart-server-fixed.vercel.app/products')
@@ -46,10 +53,10 @@ const Shop = () => {
             </p>
 
             <input onChange={getData} className='border rounded w-96 h-12' type="text" />
-            <div className="products w-96 m-auto">
+            <div className="products flex  items-start flex-wrap">
                 
                 {
-                    products?.filter(product => !product.isSoldOut && (product?.Id?.toString()?.includes(search) || product.Model?.toString()?.toLowerCase()?.includes(search.toLocaleLowerCase()))).slice(0, 50).map(product => <ProductCard key={product.Id} product={product}></ProductCard>)
+                    products?.filter(product => !product.isSoldOut && (product?.Id?.toString()?.includes(search) || product.Model?.toString()?.toLowerCase()?.includes(search.toLocaleLowerCase()))).slice(0, 50).map(product => <ProductCard key={product.Id} product={product} location={location}></ProductCard>)
                 }
             </div>
             {/* <div className="flex flex-col">

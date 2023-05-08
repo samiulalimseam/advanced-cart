@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const Cart = () => {
     const { cartArray, setCartArray } = useContext(ShopContext);
     const [loading, setLoading] = useState(false);
-    const [orderInfo, setOrderInfo] = useState({ customerNumber: '', customerName: '', customerEmail: '', products: cartArray });
+    const [orderInfo, setOrderInfo] = useState({ time:new Date(), customerNumber: '', customerName: '', customerEmail: '', products: cartArray });
     const ref = useRef();
     const [toShow, setShow] = useState('hidden');
 

@@ -1,17 +1,17 @@
 import React, { useContext, useState } from 'react';
 import { ShopContext } from '../../context/ShopContext';
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, location }) => {
     const { cartArray, setCartArray } = useContext(ShopContext);
     const [btnStatus, setBtnStatus] = useState(false);
     const [btnColor, setBtnColor] = useState('red');
-    const [cursorStatus, setCursorStatus] = useState('pointer');
+    const prodLocation =  location.find(element=> element.Id === parseInt(product.Id));
 
 
-
+    
     const handleAddProduct = () => {
 
-
+        
 
 
         if (cartArray.find(item => item.Id === product.Id)) {
@@ -35,7 +35,10 @@ const ProductCard = ({ product }) => {
                     <p className=''>Model: {product.Model}</p>
                     <p className=''>Size: {product.Size}</p>
                     <p className=''>Price: {product.MRP}</p>
-                    <p className=''>Location: {product.Location}</p>
+                    <p className=''>Location:  { 
+                           prodLocation?.Location  
+
+                    }</p>
                     {product?.isSoldOut && <p>Sold Out</p>}
                 </div>
                 <div className=" flex flex-col">

@@ -29,6 +29,7 @@ const InvoiceModal = ({ data, handleDelete, soldOut,clearCart,cartArray, orderIn
                         {errors.number && <span>This field is required</span>}
                         <input onChange={e => { setOrderInfo({ ...orderInfo, customerName: e.target.value }) }}  type="text" name='name' placeholder="Name" className=" m-1 input input-bordered input-primary w-full max-w-xs" />
                         <input onChange={e => { setOrderInfo({ ...orderInfo, customerEmail: e.target.value }) }}  type="email" name='email' placeholder="Email" className=" m-1 input input-bordered input-primary w-full max-w-xs" />
+                        <input type="text" defaultValue={new Date()} disabled onChange={{...orderInfo, time: new Date()}} />
                         
                         <button  className='btn btn-primary'>Submit</button>
                     </form>
