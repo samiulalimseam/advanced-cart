@@ -9,6 +9,7 @@ import OrderPrint from '../pages/orderPrint/OrderPrint';
 import Orders from '../pages/orders/Orders';
 import Shop from '../pages/Shop';
 import PrivateRoute from './PrivateRoute';
+import Restock from '../pages/Restock/Restock';
 
 const siteRoutes = createBrowserRouter([
     {
@@ -34,6 +35,11 @@ const siteRoutes = createBrowserRouter([
             {
                 path: "/inventory",
                 element:<PrivateRoute> <Inventory></Inventory> </PrivateRoute>
+            },
+            
+            {
+                path: "/restock",
+                element:<PrivateRoute> <Restock></Restock> </PrivateRoute>
             },
             {
                 path: "/print/:id",

@@ -8,6 +8,7 @@ const ShopContextProvider = ({ children }) => {
     const [cartArray, setCartArray] = useState([]);
     const [userData, setUserData] = useState([]);
     const [user, setUser] = useState({});
+    const [restockProduct, setRestockProduct]= useState(null);
    
 
 
@@ -37,7 +38,7 @@ const ShopContextProvider = ({ children }) => {
 
 
 
-    const contextData = {googleLogin,user,logOut,cartArray, setCartArray, userData, setUserData }
+    const contextData = {googleLogin,user,logOut,cartArray, setCartArray, userData, setUserData, restockProduct,setRestockProduct }
 
     return (
         <div>

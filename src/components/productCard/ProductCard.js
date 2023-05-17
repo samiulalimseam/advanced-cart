@@ -5,7 +5,7 @@ const ProductCard = ({ product, location }) => {
     const { cartArray, setCartArray } = useContext(ShopContext);
     const [btnStatus, setBtnStatus] = useState(false);
     const [btnColor, setBtnColor] = useState('red');
-    const prodLocation =  location.find(element=> element.Id === parseInt(product.Id));
+    const prodLocation =  location.find(element=> (product.Id).toString() === (element.Id).toString()  );
 
 
     

@@ -4,10 +4,14 @@ import { Link } from 'react-router-dom';
 import { CSVLink } from 'react-csv';
 import { Oval } from 'react-loader-spinner';
 import UniqueModelsBySize from '../../components/UniqueModelBySize/UniqueModelBySize';
+import ProductVisualization from './ProductVisualize/ProductVisualization';
 
 const Inventory = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [search, setSearch] = useState('')
+    const [total, setTotal] = useState(0);
+    let priceArray = [0];
     let modelsSet = new Set();
     let sizeSet = new Set();
     let sizeWiseProduct = [];
@@ -22,8 +26,12 @@ const Inventory = () => {
 
     let data = products;
 
+    const getData = (val) => {
+        setSearch(val.target.value)
+    }
 
 
+    products?.filter(product => product.isSoldOut === true).map(p => priceArray.push(p.MRP))
 
     useEffect(() => {
         setLoading(true);
@@ -44,7 +52,7 @@ const Inventory = () => {
     let modelsArray = Array.from(modelsSet);
     let sizeArray = Array.from(sizeSet);
 
-        
+
 
 
 
@@ -77,10 +85,19 @@ const Inventory = () => {
                         <Link to={`/add-product`} className="btn btn-sm btn-success">Add Product</Link>
                     </div>
                 </div>
+                <div className='mx-auto w-96 my2' >
+                    <p className='text-lg m-auto w-96'>Products Variation Counts</p>
 
+                    <div className='stats m-2 bg-primary flex  md:flex-row md:w-[80%] mx-auto flex-col justify-center items-center text-primary-content'>
+                        <p>Models:{Array.from(modelsSet).length}</p>
+
+
+
+                    </div>
+                </div>
                 <div className="stat">
-                    <div className="stat-title">Current balance</div>
-                    <div className="stat-value">$89,400</div>
+                    <div className="stat-title">Models</div>
+                    <div className="stat-value">{Array.from(modelsSet).length}</div>
                     <div className="stat-actions">
                         <CSVLink data={data} filename={`zays-inventory ${new Date()}.csv`} headers={headers} className="btn btn-sm m-2">Export</CSVLink>
                         <button className="btn btn-sm m-2">Import</button>
@@ -166,9 +183,13 @@ const Inventory = () => {
                     </div>
                     <div className="flex flex-col justify-start">
                         <p className="my-4 text-4xl font-bold text-left text-gray-700 dark:text-gray-100">
-                            34,500
+                            {
+                                priceArray.reduce((a, b) => {
+                                    return a + b
+                                })
+                            }
                             <span className="text-sm">
-                                $
+                                ৳
                             </span>
                         </p>
                         <div className="flex items-center text-sm text-green-500">
@@ -190,29 +211,16 @@ const Inventory = () => {
 
             </div>
             {/* Unique model by size -------------------- */}
-            <div className='mx-auto w-96 my2' >
-                <p className='text-lg m-auto w-96'>Products Variation Counts</p>
-
-                <div className='stats m-2 bg-primary flex  md:flex-row md:w-[80%] mx-auto flex-col justify-center items-center text-primary-content'>
-                    <p>Models:{Array.from(modelsSet).length}</p>
-
-
+            <h3>Search for info of a Model </h3>
+            <p>
+                <input onChange={getData} className='border rounded w-96 h-12' type="text" />
+                <div className="products   w-full m-3 ">
+                    {/* MOdel wise product count */}
+                    {
+                        <ProductVisualization products={products?.filter(product => !product.isSoldOut && (product?.Id?.toString()?.includes(search) || product.Model?.toString()?.toLowerCase()?.includes(search.toLocaleLowerCase()))).slice(0, 50)}></ProductVisualization>
+                    }
 
                 </div>
-            </div>
-            <p>
-                {/* MOdel wise product count */}
-
-                {
-                    modelsArray.map(model => {
-                        return <p>Model: {model} count: {
-                            products.filter(product => product.Model === model).map(unProduct => {
-                                sizeArray.forEach(size)
-                            })
-                        }</p>
-                    })
-                    
-                }
             </p>
 
 

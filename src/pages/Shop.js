@@ -20,7 +20,7 @@ const Shop = () => {
     }
 
     useEffect(()=>{
-        fetch('http://localhost:5000/api/locations')
+        fetch('https://advanced-cart-server-fixed-samiulalimseam.vercel.app/api/locations')
             .then(res=> res.json())
             .then(data=> setLocation(data))
             .catch(err=> console.error(err))

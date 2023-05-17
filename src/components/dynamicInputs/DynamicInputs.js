@@ -18,7 +18,7 @@ function DynamicInputs({ numInputs }) {
           onChange={(event) => handleInputChange(index, event)}
         />
       ))}
-      <button onClick={() => console.log(inputValues)}>Get Values</button>
+        <button onClick={() => console.log(inputValues)}>Get Values</button>
     </div>
   );
 }
