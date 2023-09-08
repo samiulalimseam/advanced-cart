@@ -39,7 +39,7 @@ const Restock = () => {
         })
             .then(data => data.json())
             .then(d => {
-                toast(d.modifiedCount+ 'Product Updated')
+                toast('Product Updated')
                 
             })
 

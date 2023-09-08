@@ -5,9 +5,12 @@ import { CSVLink } from 'react-csv';
 import { Oval } from 'react-loader-spinner';
 import UniqueModelsBySize from '../../components/UniqueModelBySize/UniqueModelBySize';
 import ProductVisualization from './ProductVisualize/ProductVisualization';
+import ProductSearch from './ProductVisualize/ProductbySize';
 
 const Inventory = () => {
     const [products, setProducts] = useState([]);
+    const [location, setLocation] = useState([]);
+    const [searchMode, setSearchMode] = useState('byModel');
     const [loading, setLoading] = useState(false);
     const [search, setSearch] = useState('')
     const [total, setTotal] = useState(0);
@@ -23,8 +26,17 @@ const Inventory = () => {
         { label: "Location", key: "Location" },
         { label: "Sold Oout", key: "isSoldOut" },
     ];
+    let locationHeaders = [
+        { label: "Id", key: "Id" },
+        
+       
+       
+        { label: "Location", key: "Location" },
+       
+    ];
 
     let data = products;
+    let LocationData = location;
 
     const getData = (val) => {
         setSearch(val.target.value)
@@ -39,6 +51,16 @@ const Inventory = () => {
             .then(res => res.json())
             .then(data => {
                 setProducts(data)
+                setLoading(false)
+            })
+            .catch(err => console.error(err))
+    }, [])
+    useEffect(() => {
+        setLoading(true);
+        fetch('https://advanced-cart-server-fixed-samiulalimseam.vercel.app/api/locations')
+            .then(res => res.json())
+            .then(data => {
+                setLocation(data)
                 setLoading(false)
             })
             .catch(err => console.error(err))
@@ -99,7 +121,8 @@ const Inventory = () => {
                     <div className="stat-title">Models</div>
                     <div className="stat-value">{Array.from(modelsSet).length}</div>
                     <div className="stat-actions">
-                        <CSVLink data={data} filename={`zays-inventory ${new Date()}.csv`} headers={headers} className="btn btn-sm m-2">Export</CSVLink>
+                        <CSVLink data={data} filename={`zays-inventory-products ${new Date()}.csv`} headers={headers} className="btn btn-sm m-2">Export Products</CSVLink>
+                        <CSVLink data={LocationData} filename={`zays-inventory-location ${new Date()}.csv`} headers={locationHeaders} className="btn btn-sm m-2">Export Location</CSVLink>
                         <button className="btn btn-sm m-2">Import</button>
                     </div>
 
@@ -210,9 +233,20 @@ const Inventory = () => {
 
 
             </div>
-            {/* Unique model by size -------------------- */}
+            <div className=''>
+                <p>Select search type : </p>
+                <select onChange={(e)=>
+                    {
+                        console.log(e.target.value);
+                        setSearchMode(e.target.value)
+                    }
+                }>
+                    <option value="byModel">by Model</option>
+                    <option value="bySize">by Size</option>
+                </select>
+                             {/* Unique model by size -------------------- */}
+            <div className={searchMode == 'byModel' ? '': 'hidden'}>
             <h3>Search for info of a Model </h3>
-            <p>
                 <input onChange={getData} className='border rounded w-96 h-12' type="text" />
                 <div className="products   w-full m-3 ">
                     {/* MOdel wise product count */}
@@ -221,7 +255,16 @@ const Inventory = () => {
                     }
 
                 </div>
-            </p>
+            </div>
+            <div className={searchMode == 'bySize' ? '': 'hidden'}>
+            <h3>Search for info of a Size </h3>
+                <input onChange={getData} className='border rounded w-96 h-12' type="text" />
+                {
+                      <ProductSearch productData={ products?.filter(product => !product.isSoldOut  )} />
+                }
+            </div>
+            </div>
+           
 
 
 
